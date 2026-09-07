@@ -3013,3 +3013,9 @@ No exits this firing. All three stops remain resting unchanged. 5g: daily check 
 **Errors / anomalies:** none.
 
 ---
+
+## 2026-09-07T18:35:15Z -- market CLOSED (holiday) -- no-op
+
+Market status: CLOSED. 2026-09-07 is a NYSE holiday (Labor Day). Per Step 1, no further steps executed this firing.
+
+---
