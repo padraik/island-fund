@@ -2975,3 +2975,9 @@ No exits this firing. All three stops remain resting unchanged. 5g: daily check 
 **Errors / anomalies / TEMPORARILY UNPROTECTED alerts:** none.
 
 ---
+
+## 2026-09-07T13:35:17Z -- market CLOSED (holiday) -- no-op
+
+**Market status:** CLOSED -- 2026-09-07 is Labor Day, a listed 2026 NYSE holiday. Per Step 1, no further steps or tool calls were taken.
+
+---
