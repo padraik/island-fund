@@ -1,5 +1,5 @@
 # ISLAND FUND -- PASS TRACKER
-*Updated every Monday when the week folder resets. Baxter reads this alongside positions.md. Last un-stalened Aug 28, 2026, via /stonks STARTUP's freshness check (added Aug 19) -- previous update Aug 19.*
+*Updated every Monday when the week folder resets. Baxter reads this alongside positions.md. Last un-stalened Sep 7, 2026, via /stonks STARTUP's freshness check (added Aug 19) -- previous update Aug 28.*
 
 ---
 
@@ -23,6 +23,7 @@ Each entry lists the specific conditions for "Create New Pitch" and "Stop Watchi
 | 2 | Jun 1, 2026 | week-02 created | STZ | -- | CALM screened out. ONDS + UMAC + JFB added to watch. HITI + CCL entered (AH Jun 1). STZ instrument failed (56% spread). MDT + CHPT + PVH check Jun 3. |
 | -- | Aug 19, 2026 | un-stalening, not a new week | LYFT, FUBO, TSLA, DASH, ABNB(puts), RCL, TTD | -- | First real update since Jun 30 (~7 weeks). 9 entries mechanically closed on their own written date triggers (see STOPPED WATCHING). SBUX direction-uncertain entry resolved live (confirmed puts zone, $104.90, 83rd pct). 7 entries still need real attention, listed above. |
 | -- | Aug 28, 2026 | un-stalening, not a new week | LYFT (reconciliation still unresolved), FCN (3-month clock expires Sep 1) | -- | 9 days since the last pass, still inside a normal cadence gap. Live price checks against each entry's own written trigger: **UMAC closed** (broke its own $23.38 stop-watching line, now $23.56). **TSLA, DASH, ABNB(puts) closed** -- all three sat "STALE, needs a fresh look or a close" for 9 more days with neither happening; their proposed Aug21 contracts expired unverified, closed rather than left open indefinitely. FCN, JFB, ONDS checked live, neither trigger hit on any -- unchanged. No new pitches from this pass; separate research session same week (Aug 24) found MOMO at 3.5/5, held on a live "no other buyers" liquidity block. |
+| -- | Sep 7, 2026 | un-stalening, not a new week | -- | -- | 10 days since Aug 28. Michael asked overnight ("do I buy anything, should I go CMX") -- CMX does not resolve to any Robinhood-tradable instrument (search + fundamentals + quote all came back empty/404); no research possible, flagged for Michael directly rather than guessed at. Live checks against each entry's own trigger: **FCN closed** -- the "three months without a pullback" clock (from the Jun 1 pass date) expired Sep 1 with the stock at $151.70, never touching the $144-146 pullback zone; trigger fired exactly as written. **LYFT reconciliation resolved** -- the real LYFT position that traded elsewhere in the fund (separate thesis, separate entry) fully closed back on Aug 6 (ladder +$90, runner +$26, +$116 total on $180 risked); nothing left to reconcile, this stale pass-tracker thread is superseded by a trade that's already in the books. JFB, ONDS checked live (ONDS $7.61/26th pct, JFB quote still unavailable on Robinhood) -- neither trigger hit, unchanged. No new pitches; no fresh screening batch run (not requested, and tonight's ask was a live-data check-in, not a scan). |
 
 ---
 
@@ -99,7 +100,7 @@ Passes where the original decision still stands but the catalyst window is open.
 
 ---
 
-### LYFT -- NEEDS RECONCILIATION, not auto-closed (Aug 19 un-stalening): this Jun 1 pass-tracker entry never got resolved as its own watch item, but LYFT was independently traded for real elsewhere in the fund since then (ladder partial +$90, close +$26 -- see positions.md's closed-positions history). This entry is stale and probably redundant with that real trade, but reconciling exactly how needs someone to actually compare the two threads, not a mechanical date check. Flagged, not resolved tonight.
+### LYFT -- STOPPED WATCHING, RECONCILED (Sep 7 un-stalening): the real LYFT position traded elsewhere in the fund (separate thesis, separate entry, not this Jun 1 pass) closed completely back on Aug 6 -- ladder +$90, runner +$26, +$116 total on $180 risked. Nothing left to reconcile; this thread is superseded by a trade already closed and booked. See positions.md's closed-positions history for the real numbers.
 **Status:** Keep Watching
 **Last checked:** Jun 1, 2026 | **Pass date:** Jun 1, 2026
 **Pass reason:** 3/5 -- no insider buying, Q1 EPS missed by 42% with no clear explanation. "Maybe Q1 was one-time" is not a clean enough catalyst.
@@ -156,7 +157,7 @@ Passes where the original decision still stands but the catalyst window is open.
 
 ---
 
-### FCN (FTI Consulting) -- live $153.41 (31st pct, MID-OUT), neither trigger hit yet (Aug 28 un-stalening). Flag for next review: the "three months without a pullback" stop-watching clock (from Jun 1 pass date) expires Sep 1 -- four days out. If no pullback to $144-146 by then, this closes on its own trigger next session.
+### FCN (FTI Consulting) -- STOPPED WATCHING (Sep 7 un-stalening): its own "three months without a pullback" clock expired Sep 1; live price $151.70 (27th pct, MID-OUT) never touched the $144-146 pullback zone. Trigger fired as written.
 **Status:** Keep Watching
 **Last checked:** Jun 1, 2026 | **Pass date:** Jun 1, 2026
 **Pass reason:** Three C-suite executives bought 14,400 shares combined at $144.21 on the same day (May 13). Strong signal. But: high-priced stock ($153), only 2 analysts cover it, no viable option in range -- cheapest is $165 at risk.
@@ -442,8 +443,14 @@ Entries removed from active monitoring. Reason and final outcome recorded.
 | Aug 19, 2026 | FUBO | World Cup broadcast rights, near lows | Q3 earnings reported Aug 5 -- confirmed live | Base shrank outside World Cup window (~25K of ~20K net add was tournament-only). Pass validated as correct -- no clean spike materialized. |
 | Aug 19, 2026 | RCL (puts) | Beat-then-guide-down thesis | Jul 28 earnings, confirmed live (was estimated, now verified) | Not checked further -- window closed |
 | Aug 19, 2026 | TTD (puts) | CTV deceleration thesis | Aug 6 earnings, confirmed live (was estimated, now verified) | Not checked further -- window closed |
+| Aug 28, 2026 | UMAC | Trump admin funding talks, Trump Jr. adviser | Broke its own $23.38 new-highs stop-watching line (now $23.56) | Not checked further -- thesis fully priced in per its own trigger |
+| Aug 28, 2026 | TSLA (puts) | Overvaluation/delivery-miss thesis | 8-week-stale Jun 22 data, proposed Aug21 contract expired unverified | Closed on staleness, not a live signal -- re-screen from scratch if revisited |
+| Aug 28, 2026 | DASH (puts) | Guide-down repricing thesis | Same staleness closure as TSLA | Re-screen from scratch if revisited |
+| Aug 28, 2026 | ABNB (puts) | Nights-booked deceleration thesis | Same staleness closure as TSLA/DASH | Re-screen from scratch if revisited |
+| Sep 7, 2026 | FCN | C-suite cluster buy at $144.21, no viable option at pass | 3-month no-pullback clock expired Sep 1; stock $151.70, never reached $144-146 | Thesis never got a cheap enough entry; insider buy price now 5%+ below market with no re-test |
+| Sep 7, 2026 | LYFT (Jun 1 pass entry) | 3/5, unexplained EPS miss, below threshold | Superseded -- a separate, real LYFT trade (different thesis) fully closed Aug 6 | +$116 on $180 risked, already booked in positions.md -- this entry was tracking the wrong thread |
 
-**Still not closed, real work still needed:** LYFT (needs reconciliation against a real trade that already happened -- see entry above), TSLA/DASH/ABNB-puts (Aug 21 expiry hasn't technically passed but the Jun 22 data is 8 weeks stale -- needs a fresh screen or a close, not another two days of sitting). FCN, JFB, UMAC, ONDS remain genuinely open-ended (no date trigger) and weren't touched.
+**Still not closed, real work still needed:** JFB, ONDS remain genuinely open-ended (no date trigger) and weren't touched beyond tonight's live price check (ONDS $7.61/26th pct, JFB quote unavailable on Robinhood).
 
 ---
 
