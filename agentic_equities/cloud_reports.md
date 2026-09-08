@@ -3210,3 +3210,38 @@ Market status: CLOSED. 2026-09-07 is a NYSE holiday (Labor Day). Per Step 1, no 
 **Errors / anomalies / TEMPORARILY UNPROTECTED alerts:** none.
 
 ---
+## 2026-09-08T19:37:17Z -- market OPEN -- breaker OK -- 6 positions -- 0 entries -- 0 exits
+
+**Anomaly flag (top of report per spec):** The immediately preceding firing (2026-09-08T18:37:58Z, commit fc72747) reported growth using the OLD $300-basis/$195-threshold math ("vs $300 starting basis: +$99.35 (+33.12%)", "$195.00 threshold") even though the capital-vs-growth fix (commit 5bfb896, "separate capital-in from investment growth, scale circuit breaker to net_deposited") had already landed in git history before that firing ran. That prior report's growth/breaker figures are stale and should be disregarded by any human reviewing history. This firing correctly reads `capital_log.md` and uses net_deposited-based math throughout, per the amended spec.
+
+**Market status:** OPEN. 2026-09-08 (Tue), 3:37pm ET -- weekday, not a 2026 NYSE holiday, within 9:30am-4:00pm ET.
+
+**Account:** total_value = $400.42, cash = $46.50, unsettled_funds = $0.00, spendable_cash = $46.50.
+
+**Capital vs growth (from capital_log.md):** net_deposited = $400.00 (seed $300.00 on 2026-07-21 + deposit $100.00 on 2026-09-08). growth_dollars = $400.424 - $400.00 = +$0.42. growth_pct = +0.11%. This is a flat/roughly-breakeven day for actual investment performance, not a gain manufactured from the deposit.
+
+**Circuit breaker:** NOT tripped (total_value $400.42 > net_deposited*0.65 = $260.00 trip line).
+
+**Open positions (6):**
+- CMCSA: 1 sh, entry $26.72, current $26.35, stop $25.11 (R=$1.61), tranches sold 0. Ladder dormant (original_shares=1 < 3, by design).
+- UBS: 1 sh, entry $55.47, current $55.25, stop $52.14 (R=$3.33), tranches sold 0. Ladder dormant (original_shares=1 < 3, by design).
+- VRNS: 1 sh, entry $42.44, current $45.33, stop $39.47 (R=$2.97), tranches sold 0. Ladder dormant (original_shares=1 < 3, by design).
+- CNH: 7 sh, entry $13.79, current $13.73, stop $12.96 (R=$0.83), tranches sold 0. 1R ladder trigger is $14.62 -- current price has not reached it, no action.
+- TAK: 4 sh, entry $18.59, current $18.40, stop $17.47 (R=$1.12), tranches sold 0. 1R ladder trigger is $19.71 -- current price has not reached it, no action.
+- TS: 1 sh, entry $57.11, current $57.24, stop $53.68 (R=$3.43), tranches sold 0. Entered this session (13:40 ET); ladder dormant (original_shares=1 < 3, by design).
+
+**Step 5 exit management:** Quotes for all 6 symbols cross-checked against recent daily closes (through 9/4) -- all plausible, no implausible-quote skips. Self-heal (5b): every position already had a resting stop_market GTC order covering its full current share count -- no new stops placed. R derivation (5c): all six R values positive, no anomalies; tranches_sold=0 for all six. Ladder (5d): dormant for the four 1-share positions by design; CNH and TAK are original_shares>=3 but neither has reached its 1R trigger. Trend-break (5e): EMA(20,d)/RSI(14,d) as of the last completed session (9/4) vs current price -- CMCSA (current $26.35 vs EMA20 $26.24, RSI 55.4), UBS (current $55.25 vs EMA20 $54.22, RSI 60.7), VRNS (current $45.33 vs EMA20 $43.73, RSI 58.6), CNH (current $13.73 vs EMA20 $11.97, RSI 79.2), TAK (current $18.40 vs EMA20 $18.01, RSI 62.1), TS (current $57.24 vs EMA20 $54.99, RSI 57.9) -- all six are above their EMA20 with RSI well above 45; no trend-break exits. Time-stop (5f): 15-trading-day trailing low (8/17-9/4) vs current price -- CMCSA ($25.50 vs $26.35), UBS ($52.88 vs $55.25), VRNS ($39.88 vs $45.33), CNH ($10.03 vs $13.73), TAK ($17.28 vs $18.40), TS ($52.07 vs $57.24) -- none made a new lower low, no time-stop exits. Earnings (5g): daily check (9:35 firing only) -- not this firing (3:37pm), skipped per spec.
+
+**Step 6 Phase B eligibility:** RAN. Breaker not tripped, spendable_cash ($46.50) >= $10 minimum. Open position count is 6, which is NOT < 6 -- fresh entries (Step 10A) are hard-skipped this firing regardless of scan results. Add-ons (Step 10B) remain in scope since they create no new position. Given fresh entries were already structurally blocked, the Step 7 scan/Step 8 Baxter pathway (whose output only feeds fresh-entry candidates) was not re-run this firing; add-on eligibility was checked directly against the Step 7 HARD/SOFT gate for the only symbols condition (a) allows -- see below.
+
+**Step 10B add-on evaluation (the only action path available this firing):** Of the 6 held positions, only VRNS ($45.33 > entry $42.44) and TS ($57.24 > entry $57.11) are currently winners -- CMCSA, UBS, CNH, TAK are at or below entry and are categorically excluded (adds go to winners only, no averaging down). TS is further excluded under condition (b): a BUY order for TS was already placed earlier today (13:40 ET), so max-1-add-per-symbol-per-day rules it out. That leaves VRNS as the sole candidate. Ran the Step 7 HARD gate on VRNS directly: price $45.33 > SMA50 > SMA200 stacking aside, current price remains below the prior 20-trading-day Donchian high of $48.21 (set 2026-09-02) -- no breakout, HARD FAIL. **VRNS does not re-qualify; no add-on placed.**
+
+**Phase B result: no fresh entry (position count at the 6-slot cap), no add-on (VRNS fails the Donchian-breakout HARD condition; TS excluded as already bought today; CMCSA/UBS/CNH/TAK are underwater and excluded from add-on consideration entirely). Nothing qualified this firing.**
+
+**Orders placed this firing:** none.
+
+**Today's buy count (informational only, no cap):** 1 (TS, filled 13:40 ET).
+
+**Errors / anomalies / TEMPORARILY UNPROTECTED alerts:** see top-of-report flag re: prior firing's stale $300-basis math. No issues in this firing's own execution.
+
+---
