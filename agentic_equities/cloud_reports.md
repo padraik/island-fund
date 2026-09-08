@@ -3141,3 +3141,40 @@ Market status: CLOSED. 2026-09-07 is a NYSE holiday (Labor Day). Per Step 1, no 
 **Errors / anomalies / TEMPORARILY UNPROTECTED alerts:** none.
 
 ---
+
+## 2026-09-08T17:40:36Z -- market OPEN -- breaker OK -- 6 positions -- 1 entry -- 0 exits
+
+**Market status:** OPEN. 2026-09-08 (Tue) 1:35pm ET -- weekday, not a 2026 NYSE holiday, within 9:30am-4:00pm ET.
+
+**Account:** total_value = $399.09, cash = $46.50, unsettled_funds = $0.00, spendable_cash pre-trade = $103.61. vs $300 starting basis: +$99.09 (+33.03%) -- a gain, not a drawdown.
+
+**Circuit breaker:** NOT tripped (total_value $399.11 > $195.00 threshold at time of check).
+
+**Open positions before this firing's entry (5):**
+- CMCSA: 1 sh, entry $26.72, current $26.08, stop $25.11 (R=$1.61), tranches sold 0. Ladder dormant (original_shares=1 < 3, by design).
+- UBS: 1 sh, entry $55.47, current $55.42, stop $52.14 (R=$3.33), tranches sold 0. Ladder dormant (original_shares=1 < 3, by design).
+- VRNS: 1 sh, entry $42.44, current $45.58, stop $39.47 (R=$2.97), tranches sold 0. Ladder dormant (original_shares=1 < 3, by design) -- current price is above the theoretical 1R trigger ($45.41) but ladder logic only activates at original_shares>=3, so no action.
+- CNH: 7 sh, entry $13.79, current $13.61, stop $12.96 (R=$0.83), tranches sold 0. 1R ladder trigger is $14.62 -- current price has not reached it, no action.
+- TAK: 4 sh, entry $18.59, current $18.31, stop $17.47 (R=$1.12), tranches sold 0. 1R ladder trigger is $19.71 -- current price has not reached it, no action.
+
+**Step 5 exit management:** Quotes for all 5 symbols cross-checked against recent daily closes (through 9/4) -- all plausible, no implausible-quote skips. Self-heal (5b): every position already had a resting stop_market GTC order covering its full current share count -- no new stops placed. R derivation (5c): all five R values positive, no anomalies; tranches_sold=0 for all five. Ladder (5d): dormant for the three 1-share positions by design; CNH and TAK are original_shares>=3 but neither has reached its 1R trigger. Trend-break (5e): EMA(20,d)/RSI(14,d) as of the last completed session (9/4) vs current price -- CMCSA (current $26.08 vs EMA20 $26.23, RSI 55.4), UBS (current $55.42 vs EMA20 $54.22, RSI 60.7), VRNS (current $45.58 vs EMA20 $43.73, RSI 58.8), CNH (current $13.61 vs EMA20 $11.97, RSI 79.2), TAK (current $18.31 vs EMA20 $18.01, RSI 62.1) -- none are both below EMA20 and RSI<45, no trend-break exits. Time-stop (5f): 15-period Donchian lower band (trailing 15-trading-day low through 9/4) vs current price for all five -- CMCSA ($25.50 vs $26.08), UBS ($52.88 vs $55.42), VRNS ($39.88 vs $45.58), CNH ($10.03 vs $13.61), TAK ($17.28 vs $18.31) -- none made a new lower low, no time-stop exits. Earnings (5g): daily check (9:35am firing only) -- not this firing (1:35pm), skipped per spec.
+
+**Step 6 Phase B eligibility:** RAN. Breaker not tripped, spendable_cash ($103.61) >= $10 minimum, open position count (5) < 6 -- fresh entries and add-ons both in scope this firing.
+
+**Step 7 Pathway 1 (Trend Breakout scan):** Scan "Agentic Equities - Trend Breakout" (scan_id 88bf57a3) verified to already match spec filters exactly (market cap>=2B, price 10-100, RSI(14,1d)>=50, asset type STOCK/ETF) -- no update needed. 396 matches (200 after upstream trim); held symbol TAK excluded; top 8 by relative volume taken: PS, ARCC, SMFG, FCX, BSAC, VG, TS, BCH. HARD gate (price > SMA50 > SMA200 AND close broke above the prior 20-day Donchian high): **TS passed** (price $57.13 > SMA50 $55.23 > SMA200 $52.77; broke above prior 20d-high of $56.86). The other 7 all had healthy SMA stacking but remained below their prior 20-day highs (closest miss PS: $41.78 vs $43.50 high). TS soft score 3/4: MACD crossed bullish ~8/25 and remains above signal (PASS, cross within 10 sessions), ADX(14) 16.4 (PASS, >=15), RSI(14) 57.9 (PASS, 50-85 range); relative volume 1.17 (FAIL, <1.2).
+
+**Step 9 shared filters on TS:** Earnings -- next report 2026-11-04, no imminent-earnings exclusion. Correlation -- TS sector is "Non-Energy Minerals" (Steel); none of CMCSA (Consumer Services), UBS (Finance), VRNS (Technology Services), CNH (Producer Manufacturing), or TAK (Health Technology) share it -- 0 of 2 cap, clears.
+
+**Step 8 Pathway 2 (Baxter passes.md):** Fetched https://raw.githubusercontent.com/padraik/island-buddies/main/Baxter/passes.md -- header dated Sep 7, 2026, not stale. CALLS-zone entries: FCN (entry window closed Sep 1, not a candidate), JFB/ONDS/SBUX/PYPL ("would not score" or no conviction given -- excluded, never fabricated), VRNS (~4/5 if priced right -- already held, routes to add-on not fresh entry). **0 qualifying fresh-entry candidates.**
+
+**Step 10 selection:** TS (Tier A: relative volume 1.17 < 2.0 disqualifies Tier C; ADX 16.4 < 25 disqualifies Tier B) was the only surviving fresh candidate. Per Step 10's stated preference (fresh entry over add-on when both exist), TS was selected directly and Step 10B add-on evaluation was not run this firing -- a fresh entry, once qualified, wins the single action slot regardless of what any add-on would show.
+
+**ENTRY -- TS (Tenaris SA), Pathway 1, Tier A:** target_dollars = 15% x $399.11 = $59.87. shares = floor($59.87 / $57.12 ask) = 1. Bought 1 share at $57.15 limit (a few cents above the $57.12 ask), filled at $57.11. Stop sizing: 1.5xATR(14) = 1.5 x $1.2611 = $1.89 -> raw stop $55.22, a 3.3% distance, below the 6% floor -- clamped to 6% of current price ($53.68). Placed stop_market GTC, quantity 1, stop $53.68, immediately after fill confirmation. Position is stop-only (1 share, under the 3-share ladder threshold).
+
+**Orders placed this firing:** BUY 1 TS @ $57.11 (limit $57.15, filled); SELL (stop_market GTC) 1 TS @ stop $53.68 placed immediately after fill.
+
+**Today's buy count (informational only, no cap):** 1 (TS).
+
+**Errors / anomalies / TEMPORARILY UNPROTECTED alerts:** none.
+
+---
