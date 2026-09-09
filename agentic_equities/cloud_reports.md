@@ -3292,3 +3292,57 @@ No fresh entry and no add-on were placed this firing.
 **Errors / anomalies / TEMPORARILY UNPROTECTED alerts:** none.
 
 ---
+
+## 2026-09-09T14:37:53Z -- market OPEN -- breaker OK -- 6 positions -- 0 entries -- 0 exits
+
+**Market status:** OPEN (Wed, within 9:30-4:00 ET, not a 2026 NYSE holiday).
+
+**Account (Step 2, capital-vs-growth split):**
+- total_value = $399.18
+- net_deposited (from capital_log.md, seed $300.00 on 2026-07-21 + deposit $100.00 on 2026-09-08) = $400.00
+- growth_dollars = -$0.82
+- growth_pct = -0.21%
+- cash = $46.50, unsettled_funds = $0.00, spendable_cash = $46.50
+
+**Circuit breaker:** NOT tripped. total_value $399.18 > trip line $260.00 (net_deposited $400.00 x 0.65).
+
+**Open positions (6):**
+| Symbol | Qty | Entry | Current | Stop | Tranches sold |
+|---|---|---|---|---|---|
+| CMCSA | 1 | 26.72 | 26.065 | 25.11 | 0 |
+| UBS | 1 | 55.47 | 55.155 | 52.14 | 0 |
+| VRNS | 1 | 42.44 | 45.50 | 39.47 | 0 |
+| CNH | 7 | 13.79 | 13.645 | 12.96 | 0 |
+| TAK | 4 | 18.59 | 18.265 | 17.47 | 0 |
+| TS | 1 | 57.11 | 57.40 | 53.68 | 0 |
+
+**Step 5 exit-rule management:**
+- 5a quote plausibility: all 6 quotes consistent with recent daily closes -- no implausible-quote skips.
+- 5b self-heal: every position already has a resting stop_market GTC order covering its full current share count (confirmed via get_equity_orders) -- no self-heal placements needed.
+- 5c/5d profit ladder: all positions have original_shares either <3 (CMCSA, UBS, VRNS, TS at 1 share each -- ladder structurally dormant) or, for CNH (7) and TAK (4), current_price has not reached entry_price + 1R (CNH needs $14.62 vs current $13.645; TAK needs $19.71 vs current $18.265) -- no tranches sold, no ladder action this firing.
+- 5e trend-break: none of the 6 positions are both below their 20 EMA AND RSI(14) < 45. Closest: CMCSA close $26.065 vs EMA20 $26.24 (below), but RSI14 54.15 stays well above the 45 floor -- no exit.
+- 5f time-stop: checked trailing 15 trading days of daily lows for all 6 -- none made a new lower low vs. its own prior-15-day low. No exits.
+- 5g earnings-approaching: SKIPPED, daily check (9:35 firing only) -- this is not the first firing of the day.
+
+**Step 6 Phase B eligibility:** RAN. Breaker not tripped AND spendable_cash ($46.50) >= $10 -- gate passes. Open position count = 6, so FRESH entries (Step 10A) are hard-blocked this firing per the <6 rule; ADD-ONS (Step 10B) remained in scope.
+
+**Step 7 (Trend-Breakout scan, run for add-on evaluation only):** Ran the "Agentic Equities - Trend Breakout" scan (scan_id 88bf57a3, filters verified to match spec exactly: market cap >= $2B, price $10-100, RSI14 >= 50, asset type STOCK/ETF). 395 total matches market-wide. Of the 6 held symbols, 5 cleared the scan filter (CMCSA, UBS, TAK, TS, CNH); VRNS did not (fails the scan's market-cap/price/RSI gate, likely market cap under $2B) and so was not evaluated further.
+
+**Step 7 HARD gate re-check on the 5 scan-qualifying held symbols (for Step 10B add-on eligibility):**
+- CMCSA: price $26.065 vs SMA50 $24.91 vs SMA200 $26.95 -- SMA50 is BELOW SMA200 (24.91 < 26.95), fails the price > SMA50 > SMA200 trend-stack requirement outright. HARD FAIL.
+- UBS: price $55.155 > SMA50 $53.04 > SMA200 $46.04 -- trend stack passes. Donchian(20): prior 20-day high (as of 09-08) = $55.985; current price $55.155 has not cleared it. HARD FAIL (no breakout).
+- TAK: price $18.265 > SMA50 $17.34 > SMA200 $16.78 -- trend stack passes. Donchian(20) prior 20-day high = $18.835; current $18.265 has not cleared it. HARD FAIL (no breakout).
+- CNH: price $13.645 > SMA50 $11.10 > SMA200 $10.77 -- trend stack passes. Donchian(20) prior 20-day high = $14.46; current $13.645 has not cleared it. HARD FAIL (no breakout).
+- TS: price $57.40 > SMA50 $55.25 > SMA200 $52.86 -- trend stack passes. Donchian(20) prior 20-day high = $57.98; current $57.40 has not cleared it (~1.0% short). HARD FAIL (no breakout) -- closest of the five to re-qualifying.
+
+**Step 10B add-on evaluation result: no held symbol re-qualifies through the full Step 7 HARD gate today -- no add-on placed.** Step 8 (Baxter pathway) was not run: it only produces fresh-entry candidates, and fresh entries are structurally blocked this firing (6/6 position slots full), so there was nothing for that pathway to feed into.
+
+**Phase B result: no fresh entry (position count at the 6-slot cap), no add-on (none of the 5 scan-eligible held symbols cleared the Donchian breakout HARD condition; VRNS excluded before HARD-gate evaluation for failing the scan's own filters). Nothing qualified this firing.**
+
+**Orders placed this firing:** none.
+
+**Today's buy count (informational only, no cap):** 0.
+
+**Errors / anomalies / TEMPORARILY UNPROTECTED alerts:** none.
+
+---
