@@ -3595,3 +3595,72 @@ HARD gate results (price > SMA50 > SMA200 and Donchian(20) breakout above the pr
 **Errors / anomalies / TEMPORARILY UNPROTECTED alerts:** none.
 
 ---
+
+## 2026-09-09T19:40:27Z -- market OPEN -- breaker OK -- 6 positions -- 1 entry -- 0 exits
+
+**Market status:** OPEN (Wed 2026-09-09, regular hours).
+
+**Account state (Step 2):** total_value = $400.565. net_deposited = $400.00 (capital_log.md: $300.00 seed 2026-07-21 + $100.00 deposit 2026-09-08). growth_dollars = +$0.565. growth_pct = +0.14%. spendable_cash = cash $71.61 - unsettled_funds $25.11 = $46.50.
+
+**Circuit breaker (Step 3):** NOT tripped. Trip line = net_deposited x 0.65 = $260.00. total_value $400.565 is well above it.
+
+**State rediscovery (Step 4):** held_symbols entering this firing = {UBS, VRNS, CNH, TAK, TS}. cooldown_symbols = {CMCSA} (stop filled earlier today at 15:26:05Z, 0 shares held, within 5 trading days). todays_buys (informational, no cap) = 0 before this firing's entry.
+
+**Step 5 exit-rule management (5 open positions):**
+- 5a quote plausibility: all 5 quotes consistent with recent daily closes -- no implausible-quote skips.
+- 5b self-heal: every position already had a resting stop_market GTC covering its full share count -- no self-heal needed.
+- 5c/5d profit ladder: CNH (7 sh) and TAK (4 sh) are the only original_shares >= 3 positions; neither reached entry_price + 1R (CNH needs $14.62 vs $13.91; TAK needs $19.71 vs $18.245). UBS/VRNS/TS are 1-share stop-only positions, ladder dormant by design. No tranches sold.
+- 5e trend-break: all 5 positions closed 09-08 above their 20 EMA with RSI(14) well above 45 (UBS 58.16/EMA20 54.31; VRNS 56.45/EMA20 43.90; CNH 67.46/EMA20 12.13; TAK 59.07/EMA20 18.04; TS 59.87/EMA20 55.19) -- no exits.
+- 5f time-stop: trailing 15 trading days of daily lows checked for all 5 -- none made a new lower low vs. its own prior-window low. No exits.
+- 5g earnings-approaching: SKIPPED, daily check (9:35 firing only) -- not the first firing of the day.
+
+**Open positions after Step 5 (before this firing's entry):**
+| Symbol | Shares | Entry | Current | Stop | Tranches sold |
+|---|---|---|---|---|---|
+| UBS | 1 | $55.47 | $55.015 | $52.14 | 0 |
+| VRNS | 1 | $42.44 | $45.90 | $39.47 | 0 |
+| CNH | 7 | $13.79 | $13.91 | $12.96 | 0 |
+| TAK | 4 | $18.59 | $18.245 | $17.47 | 0 |
+| TS | 1 | $57.11 | $57.69 | $53.68 | 0 |
+
+**Step 6 Phase B eligibility:** RAN. Breaker not tripped AND spendable_cash ($46.50) >= $10. Open position count = 5 < 6, so fresh entries AND add-ons both in scope.
+
+**Step 7 (Trend-Breakout scan, pathway 1):** Confirmed "Agentic Equities - Trend Breakout" scan (scan_id 88bf57a3) filters match spec exactly (market cap >= $2B, price $10-100, RSI14 >= 50, asset type STOCK/ETF; relative volume/ADX are display-only, not scan gates). Ran live: 200 matches. Top 8 by relative volume after excluding held/cooldown symbols: XP (3.26), YPF (2.19), TIMB (1.95), CHYM (1.69), BRKR (1.67), BP (1.50), CHWY (1.47), PSLV (1.45). HARD gate (price > SMA50 > SMA200, live price breaks above the Donchian(20) prior-20-day high as of 09-08 close):
+- XP: SMA50 $16.93 < SMA200 $18.04 -- FAIL (also down on the day, no breakout).
+- YPF: trend stack passes but live $54.865 < prior 20-day high $55.19 -- FAIL, no breakout.
+- TIMB: price $19.02 < SMA50 $19.67 -- FAIL.
+- **CHYM: trend stack passes (price $34.685 > SMA50 $26.72 > SMA200 $22.85); Donchian breakout CONFIRMED (live $34.685 > prior 20-day high $34.435); ATR(14) = $1.38 -- PASS.**
+- BRKR: down ~6% on the day, price $54.73 < SMA50 $58.69 -- FAIL.
+- **BP: trend stack passes (price $45.655 > SMA50 $42.06 > SMA200 $40.82); Donchian breakout CONFIRMED (live $45.655 > prior 20-day high $45.44); ATR(14) = $1.03 -- PASS.**
+- CHWY: down ~11% on the day (price $20.685), price < SMA50 $22.34 -- FAIL.
+- PSLV: SMA50 $20.16 < SMA200 $23.46 -- FAIL.
+
+Soft scoring (need >=2 of 4): **CHYM** -- MACD below signal since 08-26, no bullish cross in last 10 sessions (0 pts); ADX(14) 47.55 >= 15 (1 pt); relative volume 1.69 >= 1.2 (1 pt); RSI 58.42 in 50-85 (1 pt) -- soft score 3/4. **BP** -- MACD crossed bullish on 09-08, within last 10 sessions (1 pt); ADX(14) 15.57 >= 15 (1 pt); relative volume 1.50 >= 1.2 (1 pt); RSI 59.63 in 50-85 (1 pt) -- soft score 4/4. Both clear HARD + >=2 soft.
+
+**Step 8 (Baxter pathway 2):** passes.md is STALE -- header references a Jun 1, 2026 pass, last real re-check Aug 19-28; well past the ~7-day freshness bar. Its only candidate with any documented conviction (VRNS, "~4/5 if priced correctly") is already held (routes to 10B, not fresh); the other three listed (ONDS, JFB, UMAC) are explicitly "would not score." Fallback per spec: checked the most recent week-NN/research folder (week-08) -- content dated aug04-aug22, also stale, and none of its 25 tickers carry a documented Rule-3 clearance or conviction score in the visible index (no score fabricated). **Pathway 2 produced zero usable candidates this firing; flagging the Baxter feed as inactive/stale for human attention.**
+
+**Step 9 shared filters (CHYM, BP):** Earnings -- CHYM next print 2026-11-04 (unverified, pm), BP next print 2026-10-30 (verified, am); both well outside the 5-trading-day exclusion window. Correlation cap -- CHYM sector Technology Services matches only VRNS among held positions (1 match, cap is 2); BP sector Energy Minerals matches none. Both clear.
+
+**Step 10B add-on evaluation:** Winners today (current_price > average_buy_price): VRNS, CNH, TS (UBS and TAK are both red vs. cost, excluded under rule (a)). Ran the full Step 7 HARD gate on each: VRNS trend stack passes but live $45.90 < prior 20-day high $48.21 (Donchian FAIL); CNH trend stack passes but live $13.91 < prior 20-day high $14.46 (Donchian FAIL); TS trend stack passes but live $57.69 < prior 20-day high $57.98 (Donchian FAIL, closest). **None re-qualify -- no add-on this firing.**
+
+**Step 10A decision:** Two fresh candidates cleared all gates -- CHYM (Tier B: fresh 52-week high made today 2026-09-09 + ADX 47.55 >= 25) and BP (Tier A: neither rel-vol >= 2.0 nor a fresh multi-week high). Tier B outranks Tier A outright, so **CHYM** is the single action this firing (fresh entry preferred over add-on; no add-on was available anyway).
+
+**Sizing:** Tier B -> 25% of total_value = 0.25 x $400.565 = $100.14 target. Uncapped shares = floor($100.14 / $34.685) = 2 (cost $69.37), which exceeds spendable_cash ($46.50) -- capped to shares = floor($46.50 / $34.685) = **1 share**. Stop = current_price - 1.5xATR(14) = $34.685 - $2.07 = $32.61, which is only 5.98% below price -- clamped up to the 6% floor = $32.65. Position is 1 share -- stop-only, no ladder (by design, under 3-share threshold).
+
+**Order placed:** BUY 1 CHYM, limit $34.75 (ask had ticked to $34.72 between review and placement), filled @ $34.7299. Stop-loss placed immediately after fill: SELL 1 CHYM, stop_market GTC @ $32.65.
+
+**Open positions after this firing:**
+| Symbol | Shares | Entry | Current | Stop | Tranches sold |
+|---|---|---|---|---|---|
+| UBS | 1 | $55.47 | $55.015 | $52.14 | 0 |
+| VRNS | 1 | $42.44 | $45.90 | $39.47 | 0 |
+| CNH | 7 | $13.79 | $13.91 | $12.96 | 0 |
+| TAK | 4 | $18.59 | $18.245 | $17.47 | 0 |
+| TS | 1 | $57.11 | $57.69 | $53.68 | 0 |
+| CHYM | 1 | $34.7299 | $34.7299 | $32.65 | 0 |
+
+**Today's buy count (informational only, no cap):** 1.
+
+**Errors / anomalies / TEMPORARILY UNPROTECTED alerts:** none. (Baxter passes.md staleness flagged above for human attention -- not an error, a data-freshness note.)
+
+---
