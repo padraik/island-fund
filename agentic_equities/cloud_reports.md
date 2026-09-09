@@ -3346,3 +3346,68 @@ No fresh entry and no add-on were placed this firing.
 **Errors / anomalies / TEMPORARILY UNPROTECTED alerts:** none.
 
 ---
+
+## 2026-09-09T15:40:07Z -- market OPEN -- breaker OK -- 5 positions -- 0 entries -- 1 exit
+
+**Note:** the 1 exit below (CMCSA) was NOT a rule evaluated this firing -- it was a previously-resting GTC stop_market order (placed on a prior firing) that filled automatically on its own between firings, discovered this firing via Step 4 state rediscovery. No TEMPORARILY UNPROTECTED or error conditions this firing.
+
+**Market status:** OPEN (Wed, within 9:30-4:00 ET, not a 2026 NYSE holiday).
+
+**Account (Step 2, capital-vs-growth split):**
+- total_value = $398.13
+- net_deposited (from capital_log.md, seed $300.00 on 2026-07-21 + deposit $100.00 on 2026-09-08) = $400.00
+- growth_dollars = -$1.87
+- growth_pct = -0.47%
+- cash = $71.61, unsettled_funds = $25.11, spendable_cash = $46.50
+
+**Circuit breaker:** NOT tripped. total_value $398.13 > trip line $260.00 (net_deposited $400.00 x 0.65).
+
+**Exit since last firing (discovered this firing, not evaluated this firing):**
+- **CMCSA**: resting stop_market GTC (stop $25.11, self-healed on a prior firing) filled at 11:26am ET today at $25.1142 for 1 share, closing the position. Entry was $26.7158 -- a realized loss of ~$1.60 on the share. Mechanism: autonomous stop trigger between firings (last_transaction_at / execution timestamp 2026-09-09T15:26:05.662Z), not a Step 5 decision made in this firing.
+
+**Open positions (5):**
+| Symbol | Qty | Entry | Current | Stop | Tranches sold |
+|---|---|---|---|---|---|
+| UBS | 1 | 55.47 | 55.03 | 52.14 | 0 |
+| VRNS | 1 | 42.44 | 45.28 | 39.47 | 0 |
+| CNH | 7 | 13.79 | 13.665 | 12.96 | 0 |
+| TAK | 4 | 18.59 | 18.285 | 17.47 | 0 |
+| TS | 1 | 57.11 | 57.47 | 53.68 | 0 |
+
+**Step 5 exit-rule management (on the 5 remaining open positions):**
+- 5a quote plausibility: all 5 quotes consistent with recent daily closes -- no implausible-quote skips.
+- 5b self-heal: every remaining position already has a resting stop_market GTC order covering its full current share count (confirmed via get_equity_orders) -- no self-heal placements needed.
+- 5c/5d profit ladder: CNH (7 shares) and TAK (4 shares) are the only positions with original_shares >= 3; neither has reached entry_price + 1R yet (CNH needs $14.62 vs current $13.665; TAK needs $19.71 vs current $18.285). UBS, VRNS, TS are 1-share stop-only positions -- ladder structurally dormant, by design. No tranches sold, no ladder action.
+- 5e trend-break: all 5 positions closed (09-08) above their 20 EMA with RSI(14) well above 45 (UBS 58.1/EMA20 54.31; VRNS 56.3/EMA20 43.90; CNH 67.5/EMA20 12.13; TAK 59.0/EMA20 18.04; TS 60.1/EMA20 55.18) -- no exits.
+- 5f time-stop: checked trailing 15 trading days of daily lows for all 5 -- none made a new lower low vs. its own prior-15-day low (all 5 most-recent lows sit well above their respective window lows). No exits.
+- 5g earnings-approaching: SKIPPED, daily check (9:35 firing only) -- this is not the first firing of the day.
+
+**Step 6 Phase B eligibility:** RAN. Breaker not tripped AND spendable_cash ($46.50) >= $10 -- gate passes. Open position count = 5 < 6, so FRESH entries (Step 10A) and ADD-ONS (Step 10B) were both in scope this firing.
+
+**Step 7 (Trend-Breakout scan):** Confirmed the "Agentic Equities - Trend Breakout" scan (scan_id 88bf57a3) filters match spec exactly (market cap >= $2B, price $10-100, RSI14 >= 50, asset type STOCK/ETF -- no relative-volume/ADX/RSI-upper-bound scan filters). Ran it live: 395 total matches. Excluded held symbols (UBS, VRNS, CNH, TAK, TS) and cooldown symbol (CMCSA, exited today). Top 8 by relative volume: XP (2.20), TIMB (1.41), CHYM (1.10), PSLV (1.05), HMY (0.93), BP (0.89), BRKR (0.85), PAAS (0.80).
+HARD gate results (price > SMA50 > SMA200 and Donchian(20) breakout above the prior 20-day high):
+- XP: SMA50 $16.93 < SMA200 $18.04 (downtrend structure) -- FAIL. Also no Donchian breakout ($18.985 vs prior high $20.75).
+- TIMB: price $18.78 < SMA50 $19.67 -- FAIL. No breakout ($18.78 vs prior high $19.03).
+- CHYM: trend stack passes (price $33.67 > SMA50 $26.72 > SMA200 $22.85) but NO Donchian breakout ($33.67 vs prior high $34.435) -- FAIL, entry trigger not met.
+- PSLV: SMA50 $20.16 < SMA200 $23.46 -- FAIL. No breakout ($22.09 vs prior high $23.48).
+- HMY: SMA50 $17.81 < SMA200 $18.32 -- FAIL. No breakout ($20.76 vs prior high $23.69).
+- BP: trend stack passes (price $45.29 > SMA50 $42.06 > SMA200 $40.82) but NO Donchian breakout ($45.29 vs prior high $45.44, ~0.3% short) -- FAIL, closest of the eight.
+- BRKR: price $55.36 < SMA50 $58.69 -- FAIL. No breakout ($55.36 vs prior high $61.835).
+- PAAS: SMA50 $47.28 < SMA200 $52.40 -- FAIL. No breakout ($52.81 vs prior high $56).
+**None of the top 8 cleared the HARD Donchian-breakout entry trigger -- Pathway 1 produced zero candidates this firing.**
+
+**Step 8 (Baxter dislocation pathway):** Fetched passes.md (last updated 2026-09-07, not stale). Re-queried specifically for CALLS-zone entries with Rule 3 status / documented conviction >=3.5. Finding: no dedicated CALLS section exists; every entry carrying a stated (non-hypothetical) conviction score is tagged "Stopped Watching" (SNAP 3/5, CMCSA 3.5/5, LYFT 3/5) -- none are live "Keep Watching" candidates. The two live "Keep Watching" names (JFB, ONDS) carry no instrument/no stated conviction score ("would not score"). No candidate meets the bar -- **Pathway 2 produced zero candidates this firing.**
+
+**Step 10B add-on evaluation:** Rule (a) requires current_price > average_buy_price (winners only, no averaging down). UBS ($55.03 < $55.47), CNH ($13.665 < $13.7887), and TAK ($18.285 < $18.5899) are all currently below cost -- excluded outright. Evaluated the two winners:
+- **VRNS** (current $45.28 vs entry $42.44): HARD gate -- price > SMA50 ($43.92) > SMA200 ($32.65) passes, but Donchian(20) breakout FAILS -- current $45.28 sits below the prior 20-day high of $48.21. Does not re-qualify; no add-on.
+- **TS** (current $57.47 vs entry $57.11): HARD gate -- price > SMA50 ($55.25) > SMA200 ($52.86) passes, but Donchian(20) breakout FAILS -- current $57.47 sits below the prior 20-day high of $57.98 (~0.9% short). Does not re-qualify; no add-on.
+
+**Phase B result: no fresh entry (zero candidates cleared the HARD gate on either pathway) and no add-on (neither eligible winner re-qualified through the full Step 7 gate). Nothing qualified this firing.**
+
+**Orders placed this firing:** none.
+
+**Today's buy count (informational only, no cap):** 0.
+
+**Errors / anomalies / TEMPORARILY UNPROTECTED alerts:** none.
+
+---
