@@ -3245,3 +3245,50 @@ Market status: CLOSED. 2026-09-07 is a NYSE holiday (Labor Day). Per Step 1, no 
 **Errors / anomalies / TEMPORARILY UNPROTECTED alerts:** see top-of-report flag re: prior firing's stale $300-basis math. No issues in this firing's own execution.
 
 ---
+
+## 2026-09-09T13:38:30Z -- market OPEN -- breaker OK -- 6 positions -- 0 entries -- 0 exits
+
+**Market status:** OPEN (Wed, within 9:30-4:00 ET, not a 2026 NYSE holiday). First firing of the day (09:35 ET) -- Step 5g earnings check ran.
+
+**Account (Step 2, capital-vs-growth split):**
+- total_value = $400.035
+- net_deposited (from capital_log.md, seed $300.00 on 2026-07-21 + deposit $100.00 on 2026-09-08) = $400.00
+- growth_dollars = $0.035
+- growth_pct = +0.01%
+- cash = $46.50, unsettled_funds = $0.00, spendable_cash = $46.50
+
+**Circuit breaker:** NOT tripped. total_value $400.035 > trip line $260.00 (net_deposited $400.00 x 0.65).
+
+**Open positions (6):**
+| Symbol | Qty | Entry | Current | Stop | Tranches sold |
+|---|---|---|---|---|---|
+| CMCSA | 1 | 26.72 | 26.09 | 25.11 | 0 |
+| UBS | 1 | 55.47 | 55.08 | 52.14 | 0 |
+| VRNS | 1 | 42.44 | 45.455 | 39.47 | 0 |
+| CNH | 7 | 13.79 | 13.72 | 12.96 | 0 |
+| TAK | 4 | 18.59 | 18.24 | 17.47 | 0 |
+| TS | 1 | 57.11 | 57.82 | 53.68 | 0 |
+
+**Step 5 exit-rule management:**
+- 5a quote plausibility: all 6 quotes consistent with recent daily closes -- no implausible-quote skips.
+- 5b self-heal: every position already has a resting stop_market GTC order covering its full current share count (confirmed via get_equity_orders) -- no self-heal placements needed.
+- 5c/5d profit ladder: all 6 positions have original_shares either <3 (CMCSA, UBS, VRNS, TS at 1 share each) or, for CNH (7) and TAK (4), current_price is below entry_price (not a winner) -- ladder dormant everywhere this firing, no tranches sold, no action, per spec ("expect the ladder to be DORMANT most of the time -- that is by design").
+- 5e trend-break: none of the 6 positions are both below their 20 EMA AND RSI(14) < 45 (CMCSA closest: close $26.09 vs EMA20 $26.245, but RSI14 53.64 stays well above 45) -- no exits.
+- 5f time-stop: checked trailing 15 trading days of daily lows for all 6 -- none made a new lower low vs. its own prior-15-day low. No exits.
+- 5g earnings-approaching (first firing of day check): all 6 next-earnings dates are 2026-10-27 through 2026-11-09 -- none within the current holding period / no imminent print. No exits.
+
+**Step 6 Phase B eligibility:** RAN. Breaker not tripped AND spendable_cash ($46.50) >= $10 -- gate passes. Open position count = 6, so FRESH entries (Step 10A) are hard-blocked this firing per the <6 rule; ADD-ONS (Step 10B) remained in scope.
+
+**Step 7-9 (fresh-entry pathways):** SKIPPED. With 6/6 position slots full, no fresh entry could be placed this firing regardless of scan results, so the Trend-Breakout scan and Baxter pathway were not run -- avoids pulling candidate data with zero possible action this firing.
+
+**Step 10B add-on evaluation:** Only symbols trading above their average_buy_price are eligible (rule a, no averaging down). That excluded CMCSA, UBS, CNH, TAK outright (all currently below cost). Evaluated the two winners:
+- **VRNS** (current $45.455 vs entry $42.44): re-ran the full Step 7 HARD gate. price > sma50 ($43.92) > sma200 ($32.65) passed, but Donchian(20) breakout FAILED -- last close $45.46 (09-08) sits below the prior 20-day high of $48.21 (no breakout since roughly mid-July). VRNS does not re-qualify; no add-on.
+- **TS** (current $57.82 vs entry $57.11): HARD gate passed -- price $56.94 (09-08 close) > sma50 $55.25 > sma200 $52.86, and the close broke above the prior (pre-09-08) 20-day high of $56.86. SOFT score 2/4 (RSI14 60.14 in 50-85 range; ADX14 17.22 >= 15) -- meets the >=2 threshold, so TS re-qualifies. Tier: ADX 17.22 is well under the 25 needed for Tier B, and there's no reliable relative-volume read this early in the session to support Tier C's >=2.0 bar, so defaulted conservatively to **Tier A (15%)**. target_dollars = 15% x $400.035 = $60.01; current TS position value = $57.82; add_budget = $2.19. add_shares = floor($2.19 / $57.82) = 0 -- no round-up allowed on adds per spec. **Skipped: already effectively at Tier A ceiling, budget insufficient for 1 share.**
+
+No fresh entry and no add-on were placed this firing.
+
+**Today's buy count (informational only, no cap):** 0.
+
+**Errors / anomalies / TEMPORARILY UNPROTECTED alerts:** none.
+
+---
